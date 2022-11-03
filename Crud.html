@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<script>
+    //GET
+    $.ajax({
+        "url": url + request ,
+        "method": "GET" ,
+        "dataType" : "json" ,
+        "success" : function(data) {
+            $.each(data, function(index, dept) {
+                var filas = $("<tr>");
+
+                var id = $("<td>", { "text": dept.numero });
+                var nombre = $("<td>", { "text": dept.nombre });
+                var localidad = $("<td>", { "text": dept.localidad });
+
+                var cajaBoton = $("<td>");
+                var btnDetalles = $("<a>", { "text": "Detalles", "class": "btn btn-success", "href":`./DetalleDepartamento.html?id=${dept.numero}&nom=${dept.nombre}&loc=${dept.localidad}` });
+                var btnModificar = $("<a>", { "text": "Modificar", "class": "btn btn-info", "href":`./UpdateDepartamento.html?id=${dept.numero}` });
+                var btnEliminar = $("<a>", { "text": "Eliminar", "class": "btn btn-danger", "href":`./DeleteDepartamento.html?id=${dept.numero}` });
+
+                filas.append(id);
+                filas.append(nombre);
+                filas.append(localidad);
+                filas.append(cajaBoton);
+                cajaBoton.append(btnDetalles);
+                cajaBoton.append(btnModificar);
+                cajaBoton.append(btnEliminar);
+
+                $("#tabla tbody").append(filas);
+            });
+        }
+    });
+
+    //POST
+    var url = "https://apicruddepartamentoscore.azurewebsites.net/";
+        $("button").click(function() {
+            var id = parseInt($("#id").val());
+            var dept = $("#dept").val();
+            var loc = $("#loc").val();
+
+            var departamento = new Object();
+
+            departamento.numero = id;
+            departamento.nombre = dept;
+            departamento.localidad = loc;
+
+            var dataJson = JSON.stringify(departamento);
+            console.log(dataJson);
+
+            var request = "/api/Departamentos/";
+
+            $.ajax({
+                "url": url + request ,
+                "type": "POST" ,
+                "data": dataJson ,
+                "contentType": "application/json" ,
+                "success": function() {
+                    console.log("Insertado");
+                }
+            });
+            location.href = "./Departamento.html";
+        });
+/////////////////////////////////////////////////////////////
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        $("#id").attr("value", id);
+/////////////////////////////////////////////////////////////
+        //PUT
+        var url = "https://apicruddepartamentoscore.azurewebsites.net/";
+        $("button").click(function() {
+            var id = parseInt($("#id").val());
+            var dept = $("#dept").val();
+            var loc = $("#loc").val();
+
+            var departamento = new Object();
+
+            departamento.numero = id;
+            departamento.nombre = dept;
+            departamento.localidad = loc;
+
+            var dataJson = JSON.stringify(departamento);
+            console.log(dataJson);
+
+            var request = "/api/Departamentos/";
+
+            $.ajax({
+                "url": url + request ,
+                "type": "PUT" ,
+                "data": dataJson ,
+                "contentType": "application/json" ,
+                "success": function() {
+                    console.log("Modificado");
+                }
+            });
+            location.href = "./Departamento.html";
+        });
+
+        //DELETE
+        var url = "https://apicruddepartamentoscore.azurewebsites.net/";
+            var request = "/api/Departamentos/" + id;
+            $.ajax({
+                "url": url + request ,
+                "type": "DELETE" ,
+                "success": function() {
+                    console.log("Eliminado");
+                }
+            });
+            $("#h1Id").text("El departamento " + id + " ha sido eliminado");
+
+            location.href = "./Departamento.html";
+
+
+</script>
+
+    
+</body>
+</html>

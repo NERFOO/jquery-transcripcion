@@ -1,0 +1,7 @@
+carpeta js y css bootstrap
+carpeta js jquery
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<script src="js/jquery-3.6.1.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
